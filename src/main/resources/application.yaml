@@ -1,0 +1,10 @@
+source:
+  ingest:
+    service:
+      daily:
+        file:
+          path: "C:\\Users\\hp\\Downloads\\2.csv"
+      url: "https://github.com/CSSEGISandData/COVID-19/tree/master/csse_covid_19_data/csse_covid_19_daily_reports/01-01-2021.csv"
+
+
+batch_size: 500
