@@ -2,10 +2,8 @@ package com.my.project.service;
 
 import com.my.project.dao.LocationDataSolrRepo;
 import com.my.project.dao.SolrClientService;
-import com.my.project.models.DashboardRequestData;
-import com.my.project.models.DashboardResponseData;
-import com.my.project.models.LocationDataSolr;
-import com.my.project.models.WfhRequest;
+import com.my.project.models.*;
+import net.bytebuddy.implementation.bind.annotation.IgnoreForBinding;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
@@ -15,6 +13,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.context.ActiveProfiles;
 
+import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -40,7 +39,7 @@ class DashboardServiceTest {
     }
 
     @Test
-    void TestGetDashboardDataWithCountryAndStateAndWindowHavingData() {
+    void TestGetDashboardDataWithCountryAndStateAndWindowHavingData() throws ParseException {
         DashboardRequestData requestData = new DashboardRequestData();
         requestData.setStartDate("2021-01-02 05:22:33");
         requestData.setEndDate("2021-01-03 05:22:33");
@@ -57,7 +56,7 @@ class DashboardServiceTest {
     }
 
     @Test
-    void TestGetDashboardDataWithCountryAndStateAndWindowHavingNoData() {
+    void TestGetDashboardDataWithCountryAndStateAndWindowHavingNoData() throws ParseException {
         DashboardRequestData requestData = new DashboardRequestData();
         requestData.setStartDate("2021-01-02 05:22:33");
         requestData.setEndDate("2021-01-03 05:22:33");
@@ -68,7 +67,7 @@ class DashboardServiceTest {
     }
 
     @Test
-    void TestGetDashboardDataWithCountryAndWindowHavingData() {
+    void TestGetDashboardDataWithCountryAndWindowHavingData() throws ParseException {
         DashboardRequestData requestData = new DashboardRequestData();
         requestData.setStartDate("2021-01-02 05:22:33");
         requestData.setEndDate("2021-01-03 05:22:33");
@@ -82,7 +81,7 @@ class DashboardServiceTest {
     }
 
     @Test
-    void TestGetDashboardDataWithCountryAndWindowHacingNoData() {
+    void TestGetDashboardDataWithCountryAndWindowHacingNoData() throws ParseException {
         DashboardRequestData requestData = new DashboardRequestData();
         requestData.setStartDate("2021-01-02 05:22:33");
         requestData.setEndDate("2021-01-03 05:22:33");
@@ -138,6 +137,31 @@ class DashboardServiceTest {
         wfhRequest.setThreshholdPercentage(1);
         assertTrue(service.isReadyToWfo(wfhRequest));
 
+
+    }
+
+
+    //@Test - // TODO : Add Frequency Support!
+    void TestGetDashboardDataWithCountryAndStateAndWindowAndFrequencyHavingData() {
+        DashboardRequestData requestData = new DashboardRequestData();
+        requestData.setStartDate("2021-01-02 05:22:33");
+        requestData.setEndDate("2021-01-03 05:22:33");
+        requestData.setCountry("China");
+        requestData.setState("Hubei");
+        requestData.setFrequency(Frequency.MONTHLY);
+        LocationDataSolr locationDataSolr = new LocationDataSolr();
+        List<LocationDataSolr> locationDataSolrList = new ArrayList<>();
+        locationDataSolrList.add(locationDataSolr);
+        Mockito.when(solrRepo.findAllByCountryAndStateAndLastUpdateBetween(Mockito.any()
+                ,Mockito.any(),Mockito.any(),Mockito.any())).thenReturn(locationDataSolrList);
+        try{
+            service.getDashboardData(requestData);
+        }
+       catch (Exception ex){
+            if(ex.getMessage().equals("Frequency filter is not supported")){
+                assertTrue(false);
+            }
+       }
 
     }
 }

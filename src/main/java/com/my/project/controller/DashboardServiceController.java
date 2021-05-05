@@ -7,6 +7,8 @@ import com.my.project.service.DashboardService;
 import com.my.project.service.ingest.IngestionService;
 import com.my.project.util.Constants;
 import com.my.project.util.Utils;
+import lombok.extern.apachecommons.CommonsLog;
+import lombok.extern.flogger.Flogger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -43,7 +45,7 @@ public class DashboardServiceController {
     }
 
     @PostMapping("/data/get")
-    public ResponseEntity<List<DashboardResponseData>> getData(@RequestBody DashboardRequestData requestData) {
+    public ResponseEntity<List<DashboardResponseData>> getData(@RequestBody DashboardRequestData requestData) throws ParseException {
         if (!Utils.isWindow(requestData.getStartDate(), requestData.getEndDate())) {
             ResponseEntity.badRequest().build();
         }
