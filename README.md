@@ -9,7 +9,7 @@ mvn clean install
 #### Pre requisites
     1. Start solr --> solr/bin>solr start
     2. Check admin console at http://localhost:8983/solr
-    3. Configure core with schema of CSV(from git)
+    3. Configure core with schema(reference resources/schema.xml) of CSV(from git)
 
 ![img_2.png](img_2.png)
 
@@ -36,4 +36,10 @@ http://localhost:8080/v3/api-docs
 ### Test Results
 
 ![img_4.png](img_4.png)
+
+### TODO
+
+1. Add frequency options in the /data/get service
+2. Multi core Solr configuration
+3. Unit test case coverage
 
