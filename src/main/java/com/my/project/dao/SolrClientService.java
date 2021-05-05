@@ -1,10 +1,12 @@
 package com.my.project.dao;
 
 import com.my.project.models.LocationDataSolr;
+import org.apache.coyote.http11.filters.SavedRequestInputFilter;
 import org.apache.solr.client.solrj.SolrClient;
 import org.apache.solr.client.solrj.impl.HttpSolrClient;
 import org.apache.solr.client.solrj.response.QueryResponse;
 import org.apache.solr.common.params.MapSolrParams;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import java.util.HashMap;
@@ -14,7 +16,13 @@ import java.util.Map;
 @Service
 public class SolrClientService {
 
-    final String solrUrl = "http://localhost:8983/solr";
+    @Value("${solr.url}")
+    String solrUrl = "http://localhost:8983/solr";
+
+    @Value("${solr.collection}")
+    String collection = "locationdatasolr";
+
+
     private SolrClient getSolrClient(){
         return new HttpSolrClient.Builder(solrUrl)
                 .withConnectionTimeout(10000)
@@ -33,7 +41,7 @@ public class SolrClientService {
             queryParamMap.put("fq","{!geofilt}");
             queryParamMap.put("sfield","latlol_0_coordinate");
             MapSolrParams queryParams = new MapSolrParams(queryParamMap);
-            final QueryResponse response = client.query("locationdatasolr", queryParams);
+            final QueryResponse response = client.query(collection, queryParams);
             final List<LocationDataSolr> documents = response.getBeans(LocationDataSolr.class);
             return documents;
 
