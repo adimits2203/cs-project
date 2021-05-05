@@ -38,8 +38,9 @@ http://localhost:8080/v3/api-docs
 ![img_4.png](img_4.png)
 
 ### TODO
-
-1. Add frequency options in the /data/get service
-2. Multi core Solr configuration
-3. Unit test case coverage
+    
+    1. Add frequency options in the /data/get service
+    2. Multi core Solr configuration
+    3. Unit test case coverage
+    4. Add scheduler for file upload/solr index 
 
