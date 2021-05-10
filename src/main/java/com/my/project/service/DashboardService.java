@@ -103,7 +103,7 @@ public class DashboardService {
     }
 
     public boolean isReadyToWfo(WfhRequest wfhRequest) {
-        List<LocationDataSolr> search = solrClient.search(wfhRequest.getLatitude(), wfhRequest.getLongitude(), wfhRequest.getRadius());
+        List<LocationDataSolr> search = solrClient.searchWithFrequency();//solrClient.search(wfhRequest.getLatitude(), wfhRequest.getLongitude(), wfhRequest.getRadius());
         return isReadyToWfo(wfhRequest, search);
     }
 
@@ -113,7 +113,7 @@ public class DashboardService {
         long totalRecovered = search.stream().mapToLong(LocationDataSolr::getRecovered).sum();
         double totalActive = totalConfirmed - totalDeaths - totalRecovered;
         double percActive = (totalActive / wfhRequest.getTotalPopulation()) * 100;
-        if (percActive < wfhRequest.getThreshholdPercentage()) {
+        if (Double.compare(percActive , wfhRequest.getThreshholdPercentage()) < 0) {
             return true;
         }
         return false;

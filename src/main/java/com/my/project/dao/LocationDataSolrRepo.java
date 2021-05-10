@@ -11,6 +11,7 @@ import java.util.List;
 public interface LocationDataSolrRepo extends SolrCrudRepository<LocationDataSolr, String> {
 
     List<LocationDataSolr> findAllByCountryAndLastUpdateBetween(String country, Date start, Date end);
+    List<LocationDataSolr> findAllByLastUpdateBetween(Date start, Date end);
 
     List<LocationDataSolr> findAllByLastUpdate(Date asOn);
 

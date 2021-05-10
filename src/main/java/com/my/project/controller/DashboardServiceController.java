@@ -38,7 +38,7 @@ public class DashboardServiceController {
         this.dashboardService = dashboardService;
     }
 
-    @GetMapping("/ingest/all")
+    @GetMapping("/ingest/one")
     public ResponseEntity<String> ingestAll() {
         ingestionService.ingestOne();
         return ResponseEntity.ok("ok");
